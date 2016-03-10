@@ -11,6 +11,7 @@ clockAddin <- function() {
   # simply displays the time in a 'UI' output.
   ui <- miniPage(
     gadgetTitleBar("Clock"),
+    h2("When is Guillermo a bitch?", align = "middle"),
     miniContentPanel(
       uiOutput("time")
     )
@@ -63,6 +64,8 @@ clockAddin <- function() {
   runGadget(ui, server, viewer = viewer)
   
 }
+
+clockAddin()
 
 # Now all that's left is sharing this addin -- put this function
 # in an R package, provide the registration metadata at
