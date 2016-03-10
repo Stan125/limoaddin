@@ -1,4 +1,4 @@
 Name: Clock Add-In
 Description: Displays a clock
-Binding: clockaddin
+Binding: clockAddin
 Interactive: true
