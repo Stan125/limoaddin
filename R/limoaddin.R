@@ -10,7 +10,7 @@ sushicat <- function() {
   # Our ui will be a simple gadget page, which
   # simply displays the time in a 'UI' output.
   ui <- miniPage(
-    gadgetTitleBar("Cute Cat"),
+    gadgetTitleBar("Sushi Cat"),
     miniContentPanel(img(src = "http://costumewall.com/wp-content/uploads/2015/09/cute-cat-costumes-30.jpg",
                          style = "display: block; margin: 0 auto;"))
   )
