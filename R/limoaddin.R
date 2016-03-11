@@ -1,46 +1,90 @@
-library(rstudioapi)
-library(dplyr)
-library(shiny)
-library(miniUI)
-
-# We'll wrap our Shiny Gadget in an addin.
-# Let's call it 'clockAddin()'.
-sushicat <- function() {
+# Addin: Making histograms with some Interactive Elements
+hist_addin <- function() {
+  #.............................
+  # PRELIMINARIES
+  #.............................
+  library(rstudioapi)
+  library(dplyr)
+  library(shiny)
+  library(miniUI)
+  library(ggplot2)
   
-  # Our ui will be a simple gadget page, which
-  # simply displays the time in a 'UI' output.
+  # Function that scans the working space for dataframes
+  search_df <- function() {
+    # Container
+    c <- c()
+    
+    # Function to tell which place an object has in the workspace 
+    w <- function(x) {
+      ls <- ls(envir = .GlobalEnv)
+      return(which(ls == x))
+    }
+    
+    # Which object is a dataframe?
+    for (data in ls(envir = .GlobalEnv)) {
+      if (any(class(eval(parse(text = data))) == "data.frame")) {
+        c[w(data)] <- data
+      }
+    }
+    
+    # Return all non-NA values
+    return(c[!is.na(c)])
+    
+    # Delete the rest
+    rm(w)
+    rm(c)
+  }
+  
+  # UI
   ui <- miniPage(
-    gadgetTitleBar("Sushi Cat"),
-    miniContentPanel(img(src = "http://costumewall.com/wp-content/uploads/2015/09/cute-cat-costumes-30.jpg",
-                         style = "display: block; margin: 0 auto;"))
+    gadgetTitleBar("Interactive Histogram"),
+    fillRow(
+      miniContentPanel(
+        selectInput(label = "Select your dataset:",
+                    inputId = "dataset",
+                    choices = c("", search_df())),
+        selectInput(label = "Select your variable:",
+                    inputId = "variable",
+                    choices = c("", "bla")),
+        checkboxInput(inputId = "density",
+                      label = "Plot Density")
+      ),
+      miniContentPanel(plotOutput("plot1"))
+    )
   )
+  
   
   server <- function(input, output, session) {
     
-    # Set some CSS styles for our clock.
-    clockStyles <- paste(
-      "border: 1px solid #DADADA",
-      "background-color: #EFEFEF",
-      "border-radius: 5px",
-      "font-size: 6em",
-      "margin-top: 60px",
-      "text-align: center",
-      sep = "; "
-    )
+    # Was a dataset selected?
+    data <- reactive({
+      validate(
+        need(input$dataset != "", "Please select a data set"),
+        need(input$variable != "", "Please select a variable")
+      )
+      get(input$dataset)
+    })
+    
+    output$plot1 <- renderPlot({
+      ggplot(data = data(),
+             aes_string(x = input$variable)) +
+        geom_histogram() +
+        theme_bw()
+    })
     
     observeEvent(input$done, {
       stopApp()
     })
     
-    }
-  
-  # We'll use a pane viwer, and set the minimum height at
-  # 300px to ensure we get enough screen space to display the clock.
-  viewer <- dialogViewer(dialogName = "Sushi Cat", 
+  }
+
+  viewer <- dialogViewer(dialogName = "Histogram Add-In", 
                          height = 600, 
                          width = 900)
   runGadget(ui, server, viewer = viewer)
 }
+
+hist_addin()
 
 # Now all that's left is sharing this addin -- put this function
 # in an R package, provide the registration metadata at
