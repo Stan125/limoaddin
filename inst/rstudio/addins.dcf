@@ -1,4 +1,4 @@
 Name: Sushi Cat
 Description: Displays a cute cat
-Binding: sushicat
+Binding: hist_addin
 Interactive: true
