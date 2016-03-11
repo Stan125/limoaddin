@@ -43,9 +43,7 @@ hist_addin <- function() {
         selectInput(label = "Select your dataset:",
                     inputId = "dataset",
                     choices = c("", search_df())),
-        selectInput(label = "Select your variable:",
-                    inputId = "variable",
-                    choices = c("", "bla")),
+        uiOutput("choices1"),
         checkboxInput(inputId = "density",
                       label = "Plot Density")
       ),
@@ -59,15 +57,32 @@ hist_addin <- function() {
     # Was a dataset selected?
     data <- reactive({
       validate(
-        need(input$dataset != "", "Please select a data set"),
-        need(input$variable != "", "Please select a variable")
+        need(input$dataset != "", "Please select a data set")
       )
       get(input$dataset)
     })
     
+    variable <- reactive({
+      validate(
+        need(input$variable != "", "Please select a variable"),
+        if (input$variable != "") {
+          need(class(get(input$dataset)[, input$variable]) == "numeric", "Please pick a numeric variable")
+        }
+      )
+      input$variable
+    })
+    
+    
+    output$choices1 <- renderUI({
+      col.names <- c("",colnames(data()))
+      selectInput(inputId = "variable",
+                  label = "Select your variable",
+                  choices = col.names)
+    })
+    
     output$plot1 <- renderPlot({
       ggplot(data = data(),
-             aes_string(x = input$variable)) +
+             aes_string(x = variable())) +
         geom_histogram() +
         theme_bw()
     })
