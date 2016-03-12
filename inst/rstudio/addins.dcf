@@ -1,4 +1,4 @@
-Name: Sushi Cat
-Description: Displays a cute cat
+Name: Histogram Add-In
+Description: Helps building a cool histogram
 Binding: hist_addin
 Interactive: true
