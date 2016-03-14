@@ -63,7 +63,7 @@ hist_addin <- function() {
         sliderInput(inputId = "slider",
                     label = "Adjust number of bins",
                     min = 5,
-                    max = 50,
+                    max = 30,
                     value = 10)
       ),
       miniContentPanel(plotOutput("plot1"))
@@ -113,16 +113,28 @@ hist_addin <- function() {
       g
     })
     
-    # Stop App if Done Button is pressed
     observeEvent(input$done, {
+      # Paste Code for Histogram where cursor is
+      if (nzchar(input$dataset) && nzchar(input$variable)) {
+        code <- paste0("ggplot(data = ", input$dataset,", aes(x = ", input$variable, ")) +", 
+                       "\n", "geom_histogram(aes(y = ..density..), bins = ", input$slider,") +",
+                       "\n", "theme_bw()")
+        
+        if (input$density == TRUE) {
+          code <- paste0(code, " +", 
+                         "\n", "geom_density(fill = 'firebrick', alpha = 0.5)")
+        }
+        rstudioapi::insertText(text = code)
+      }
+      
+      # Stop App if Done Button is pressed
       stopApp()
     })
-
   }
   
-  # Where should the App be viewn?
+  # Where should the App be displayed?
   viewer <- dialogViewer(dialogName = "Histogram Add-In", 
-                         height = 600, 
-                         width = 900)
+                         height = 500, 
+                         width = 800)
   runGadget(ui, server, viewer = viewer)
 }
