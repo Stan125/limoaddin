@@ -7,6 +7,7 @@
 
 # Addin: Making histograms with some Interactive Elements
 hist_addin <- function() {
+  
   #.............................
   # PRELIMINARIES
   #.............................
@@ -14,6 +15,7 @@ hist_addin <- function() {
   library(dplyr)
   library(miniUI)
   library(ggplot2)
+  library(shiny)
   
   # Function that scans the working space for dataframes
   search_df <- function() {
