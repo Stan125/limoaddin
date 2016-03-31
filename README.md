@@ -17,7 +17,7 @@ The usage is simple; if a dataset is loaded into the working space, just click o
 
 ### Screenshot
 
-Inline-style: ![alt text](screenshot.png "Logo Title Text 1")
+![Screenshot](Screenshot.png)
 
 ### Code of Conduct
 

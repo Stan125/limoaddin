@@ -31,8 +31,8 @@ devtools::install_github("Stan125/limoaddin")
 The usage is simple; if a dataset is loaded into the working space, just click on the Add-In Tab and select 'Histogram Add-In'. The Add-In itself quickly pops up and you are good to go!
 
 ### Screenshot
-Inline-style: 
-![alt text](screenshot.png "Logo Title Text 1")
+
+![Screenshot](Screenshot.png)
 
 ### Code of Conduct
 
