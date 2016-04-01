@@ -14,7 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-'limoaddin' is an RStudio Add-In to interactively pick out datasets in the R working space, pick out a numeric variable and create a ggplot2 histogram. Afterwards, the code to create this histogram is pasted to the location of the cursor.
+### What is 'limoaddin'?
+
+limoaddin is an RStudio Add-In to interactively pick out datasets in the R working space, pick out a numeric variable and create a ggplot2 histogram. Afterwards, the code to create this histogram is pasted to the location of the cursor.
 
 ### News
 
